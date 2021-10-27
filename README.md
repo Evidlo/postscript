@@ -169,7 +169,9 @@ showpage
 
 Printers also accept [PJL](https://en.wikipedia.org/wiki/Printer_Job_Language) commands, which can control printers jobs:
 
-echo "@PJL ECHO INSERT TOKEN" | nc [printer_address] 9100
+    echo "@PJL ECHO INSERT TOKEN" | nc [printer_address] 9100
+
+    echo '@PJL RDYMSG DISPLAY="Insert Coin"' | nc [printer_address] 9100
 
 ## More Resources
 
