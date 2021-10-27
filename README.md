@@ -173,8 +173,8 @@ echo "@PJL ECHO INSERT TOKEN" | nc [printer_address] 9100
 
 ## More Resources
 
-Pretty graphics: [](https://pianomanfrazier.com/post/drawing-with-postscript/)
+Pretty graphics: <https://pianomanfrazier.com/post/drawing-with-postscript/>
 
-More postscript examples from me: [](https://github.com/Evidlo/examples/tree/master/postscript)
+More postscript examples from me: <https://github.com/Evidlo/examples/tree/master/postscript>
 
-Summary of other commands: [](https://personal.math.ubc.ca/~cass/courses/ps.html)
+Summary of other commands: <https://personal.math.ubc.ca/~cass/courses/ps.html>
