@@ -143,6 +143,15 @@ function getstorage(name){
 
 <table cellpadding="0" cellspacing="0" style="white-space:nowrap"><tbody><tr>
 <td>
+	<label>Examples:</label>
+	<select id="fileSelect">
+		<option value="">-- Select a file --</option>
+		<option value="examples/stairs.ps">stairs.ps</option>
+		<option value="examples/star.ps">star.ps</option>
+		<option value="examples/raytracing.ps">raytracing.ps</option>
+		<option value="examples/snowflake.ps">snowflake.ps</option>
+		<option value="examples/circles.ps">circles.ps</option>
+	</select>
 <input hidden type="text" style="width: 9em" id="query" autocomplete="off"> <input hidden type="button" title="Find text" onclick="proc_search()" value="Find">
 </td><td width="5">
 </td><td><input hidden type="text" style="width: 7em" id="replace" autocomplete="off"> <input hidden type="button" title="Replace text" onclick="proc_replaceall()" value="Rep">
@@ -151,12 +160,27 @@ function getstorage(name){
 <button type="button" onclick="proc_size()" id="btn_size" title="Editor size">Editor Width</button> 		
 <button type="button" id="btn_editor_options" title="Options" onclick="proc_showoption()">Options</button>
 </td><td width="5">
-</td><td><button type="button" onclick="proc_upload()" title="Create PDF, F9 or Ctrl+Enter"><img src="configure.png" align="absbottom"> Create PDF</button> 
+</td><td><button type="button" onclick="proc_upload()" title="Create PDF, F9 or Ctrl+Enter"><img src="configure.png" align="absbottom"> Run (ctrl+enter) </button>
 </td><td><div id="status">&nbsp;<font style="color:red;font-size:13px">*Changed</font></div>
 </td><td width="5">
 </td><td><div id="dest" style="font-size:13px"></div>
 </td></tr></tbody></table>
 </div>
+
+<!-- handle example loading -->
+<script>
+     document.getElementById('fileSelect').addEventListener('change', async e => {
+      const url = e.target.value;
+      if (!url) return;
+      try {
+        const res = await fetch(url);
+        const text = await res.text();
+        proc_newtab(text);
+      } catch (err) {
+        console.error("Error fetching file:", err);
+      }
+    });
+</script>
 
 </td></tr><tr><td>
 	<div id="div_scriptinject_script" style="width: 1030px; height: 874px;">
@@ -990,7 +1014,7 @@ function gd_loadfile(fileId,isfirst){
 										//Metal_whistle_vector_illustration.eps
 										if(!/^(\s)*%!PS/i.test(s)){
 											if(s.length>40*1024) s=s.substr(0,40*1024)+"\n...more";
-											s='%% This file does not support editing directly. Supports only converting to a PDF.\n\n'+s;	
+											// s='%% This file does not support editing directly. Supports only converting to a PDF.\n\n'+s;
 											encdetect=false;
 										}
 										proc_newtab(s, resp);

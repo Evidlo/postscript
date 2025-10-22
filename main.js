@@ -274,7 +274,7 @@ function handleFileSelect(files){
 			_blobtotext(f,'UTF-8',function(s,encdetect){		
 				if(!/^(\s)*%!PS/i.test(s)){
 					if(s.length>40*1024) s=s.substr(0,40*1024)+"\n...more";
-					s='%% This file does not support editing directly. Supports only converting to a PDF.\n\n'+s;					
+					// s='%% This file does not support editing directly. Supports only converting to a PDF.\n\n'+s;
 					encdetect=false;
 				}
 				proc_newtab(s,resp);
