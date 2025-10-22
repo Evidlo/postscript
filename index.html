@@ -1352,16 +1352,16 @@ function _inject(s){
 	document.body.appendChild(o);
 }
 function gd_loadscript(callback){
-	if(gd_load_timer)return;
-	if(gd_loaded && gd_pickerloaded)return;
-	gd_load_timer=setInterval(function(){
-		if(gd_loaded && gd_pickerloaded){
-			clearInterval(gd_load_timer);
-			if(callback) callback();
-		}
-	},100);
-	_inject('https://apis.google.com/js/client.js?onload=gd_clientload');
-	_inject('https://apis.google.com/js/api.js?onload=gd_loadpicker');	
+	 // if(gd_load_timer)return;
+	 // 	if(gd_loaded && gd_pickerloaded)return;
+	 // 	gd_load_timer=setInterval(function(){
+	 // 		if(gd_loaded && gd_pickerloaded){
+	 // 			clearInterval(gd_load_timer);
+	 // 			if(callback) callback();
+	 // 		}
+	 // 	},100);
+	 // 	_inject('https://apis.google.com/js/client.js?onload=gd_clientload');
+	 // 	_inject('https://apis.google.com/js/api.js?onload=gd_loadpicker');
 }
 function gd_reopen(){
 	if(gd_state2){
@@ -1395,10 +1395,10 @@ function gd_dblclick(){
 }
 var gd_userId,gd_email;
 function gd_weburl(){
-	var s;
-	if(gd_email) s='https://drive.google.com/?authuser='+encodeURIComponent(gd_email);
-	else s='https://drive.google.com/';
-	return s;
+	 // var s;
+	 // 	if(gd_email) s='https://drive.google.com/?authuser='+encodeURIComponent(gd_email);
+	 // 	else s='https://drive.google.com/';
+	 // 	return s;
 }
 function gd_clickweburl(f){
 	var s=f.href || '';
@@ -1654,7 +1654,8 @@ function init2(){
 	},100);
 }
 init2();
-</script><script src="client.js" type="text/javascript" gapi_processed="true"></script><script src="api.js" type="text/javascript" gapi_processed="true"></script>
+</script>
+<!-- <script src="client.js" type="text/javascript" gapi_processed="true"></script><script src="api.js" type="text/javascript" gapi_processed="true"></script> -->
 <iframe src="cache.html" style="display:none;width:0px"></iframe>
 
 <script src="bottom.js" async="" tos="../tos.php?app=PostScript%20Viewer%20and%20Compiler" sitetitle="PostScript Viewer and Compiler"></script>
