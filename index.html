@@ -10,10 +10,6 @@
 <meta property="og:title" content="PostScript Viewer and Compiler"> 
 <meta property="og:description" content="This online viewer is a free app that makes it easier to view PostScript files in your browser. You can easily view or edit your PostScript file. This app only works locally without going through the server. It allows you to compile a PostScript to PDF file in your browser directly. Supports PS, EPS, GZ (GZipped PS) file.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="//ehubsoft.herokuapp.com/psviewer/">
-<meta property="og:image" content="//ehubsoft.herokuapp.com/psviewer/img/logo128.png">
-
-<link rel="shortcut icon" href="https://ehubsoft.herokuapp.com/psviewer/favicon.ico">
 
 <script src="cb=gapi.es" async=""></script><script src="cb=gapi_002.es" async=""></script><script>
 var gadb=false;
@@ -164,7 +160,8 @@ function getstorage(name){
 
 </td></tr><tr><td>
 	<div id="div_scriptinject_script" style="width: 1030px; height: 874px;">
-		<textarea id="input" wrap="off" style="display: none;"></textarea><div class="CodeMirror cm-s-default CodeMirror-wrap" style="width: 1030px; height: 874px; font-size: 10pt;"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 498px; left: 109.133px;"><textarea style="position: absolute; padding: 0px; width: 1px; height: 1em; outline: none;" wrap="off" autocorrect="off" autocapitalize="none" spellcheck="false" tabindex="0">%!
+		<textarea id="input" wrap="off" style="display: none;"></textarea>
+		<div hidden class="CodeMirror cm-s-default CodeMirror-wrap" style="width: 1030px; height: 874px; font-size: 10pt;"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 498px; left: 109.133px;"><textarea style="position: absolute; padding: 0px; width: 1px; height: 1em; outline: none;" wrap="off" autocorrect="off" autocapitalize="none" spellcheck="false" tabindex="0">%!
 
 % translate page origin
 300 400 translate
@@ -201,11 +198,11 @@ showpage</textarea></div><div class="CodeMirror-vscrollbar" cm-not-content="true
 <div id="tablebottom">
 <div id="dfile1" style="display:inline"><input type="file" id="fileload1" name="files[]" multiple="" style="width:190px" accept=".ps, .eps, .gz"></div>
 <script>document.getElementById("dfile1").innerHTML='<input type="file" id="fileload1" name="files[]" multiple style="width:190px" accept=".ps, .eps, .gz">';</script>
-<button type="button" id="gd_btn_picker" onclick="gd_open_picker()" title="Open a file from Google Drive" style=""><img src="product16.png" width="14" align="absmiddle"> Open</button>
-<button type="button" id="gd_btn_reopen" onclick="gd_reopen()" style="display:none;" title="Reopen the file loaded from drive.google.com"> Reopen</button>
-<button type="button" id="gd_btn_save" onclick="gd_save()" disabled="true"><img src="product16.png" width="14" align="absmiddle"> Save</button>
-<button type="button" id="gd_btn_saveas" onclick="gd_saveas()"><img src="product16.png" width="14" align="absmiddle"> Save as..</button>
-<button type="button" id="" onclick="var a=_getid('selfolder');if(a.style.display=='')a.style.display='none';else a.style.display='';proc_onresize();" title="Select a folder to save as..">Set Folder</button>
+<button hidden type="button" id="gd_btn_picker" onclick="gd_open_picker()" title="Open a file from Google Drive" style=""><img src="product16.png" width="14" align="absmiddle"> Open</button>
+<button hidden type="button" id="gd_btn_reopen" onclick="gd_reopen()" style="display:none;" title="Reopen the file loaded from drive.google.com"> Reopen</button>
+<button hidden type="button" id="gd_btn_save" onclick="gd_save()" disabled="true"><img src="product16.png" width="14" align="absmiddle"> Save</button>
+<button hidden type="button" id="gd_btn_saveas" onclick="gd_saveas()"><img src="product16.png" width="14" align="absmiddle"> Save as..</button>
+<button hidden type="button" id="" onclick="var a=_getid('selfolder');if(a.style.display=='')a.style.display='none';else a.style.display='';proc_onresize();" title="Select a folder to save as..">Set Folder</button>
 <button type="button" title="Shortcuts for this editor" onclick="showhotkeyhelp()">Shortcuts</button>
 &nbsp;
 <select id="c_syntaxs" onchange="proc_syntaxs()" style="width:80px;margin-right:5px;display:none" title="Select the source type (HTML to PDF, TXT to PDF)">
@@ -236,7 +233,9 @@ showpage</textarea></div><div class="CodeMirror-vscrollbar" cm-not-content="true
 	</option><option value="1" selected="selected">Web PDF viewer
 </option></select>
 </td><td>&nbsp;&nbsp;
-</td><td><div id="dest2" style="font-size:14px"> &nbsp;<a id="pdfdlink" href="#" style="text-decoration:underline">Download</a> &nbsp;<a id="pdfdlink" href="blob:https://ehubsoft.herokuapp.com/a8a93ebe-8c26-4168-a260-dd1225214137" target="_blank" style="text-decoration:underline" title="Open a new window">New</a></div>
+</td><td><div id="dest2" style="font-size:14px"> &nbsp;<a id="pdfdlink" href="#" style="text-decoration:underline">Download</a> &nbsp;
+<!-- <a id="pdfdlink" href="blob:https://ehubsoft.herokuapp.com/a8a93ebe-8c26-4168-a260-dd1225214137" target="_blank" style="text-decoration:underline" title="Open a new window">New</a> -->
+ </div>
 </td><td>&nbsp;
 </td><td><div id="dest3" style="font-size:14px"></div>
 </td></tr></tbody></table>
