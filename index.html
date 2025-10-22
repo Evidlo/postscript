@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+
+<!-- This page was shamefully stolen and modified from
+	 https://ehubsoft.herokuapp.com/psviewer/ -->
+
 <html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">			
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -220,6 +224,7 @@ showpage</textarea></div><div class="CodeMirror-vscrollbar" cm-not-content="true
 </td></tr><tr><td>
 
 <div id="tablebottom">
+<div id="downlink" style="display:inline-block">Select a PS, EPS, GZ file.</div>
 <div id="dfile1" style="display:inline"><input type="file" id="fileload1" name="files[]" multiple="" style="width:190px" accept=".ps, .eps, .gz"></div>
 <script>document.getElementById("dfile1").innerHTML='<input type="file" id="fileload1" name="files[]" multiple style="width:190px" accept=".ps, .eps, .gz">';</script>
 <button hidden type="button" id="gd_btn_picker" onclick="gd_open_picker()" title="Open a file from Google Drive" style=""><img src="product16.png" width="14" align="absmiddle"> Open</button>
@@ -242,7 +247,7 @@ showpage</textarea></div><div class="CodeMirror-vscrollbar" cm-not-content="true
 </td></tr></tbody></table>
 
 <table cellpadding="0" cellspacing="0" style="margin-top:2px"><tbody><tr>
-<td><div id="downlink" style="">Select a PS, EPS, GZ file from Computer or Drive.</div>
+<td>
 </td><td width="10"></td><td><div id="msg" style="font-size:14px;width:330px;white-space:nowrap;overflow:hidden;border:0px solid red"></div>
 </td></tr></tbody></table>
 </div>
