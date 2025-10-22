@@ -303,6 +303,13 @@ showpage</textarea></div><div class="CodeMirror-vscrollbar" cm-not-content="true
 </div>
 
 <script>
+$(document).keyup(function(e) {
+console.log('key up')
+	if (e.key === "Escape") {
+	console.log('escape key up')
+	document.getElementById("div_output").style.display='none';
+	}
+});
 function _getfrmdoc(ifrm){
 	return (ifrm.contentWindow) ? ifrm.contentWindow : (ifrm.contentDocument.document) ? ifrm.contentDocument.document : ifrm.contentDocument;
 }
