@@ -143,15 +143,16 @@ function getstorage(name){
 
 <table id="tableedit" align="center" border="0" style="background: white;padding:3px 3px">
 <tbody><tr><td>
-<div id="tabletop">
+<div id="tabletop" style="float: right">
 
 <table cellpadding="0" cellspacing="0" style="white-space:nowrap"><tbody><tr>
-<td><input type="text" style="width: 9em" id="query" autocomplete="off"> <input type="button" title="Find text" onclick="proc_search()" value="Find">
+<td>
+<input hidden type="text" style="width: 9em" id="query" autocomplete="off"> <input hidden type="button" title="Find text" onclick="proc_search()" value="Find">
 </td><td width="5">
-</td><td><input type="text" style="width: 7em" id="replace" autocomplete="off"> <input type="button" title="Replace text" onclick="proc_replaceall()" value="Rep">
+</td><td><input hidden type="text" style="width: 7em" id="replace" autocomplete="off"> <input hidden type="button" title="Replace text" onclick="proc_replaceall()" value="Rep">
 </td><td width="5">
-</td><td><input type="button" title="Go, Jump to line" onclick="proc_jump()" value="Jump">
-<button type="button" onclick="proc_size()" id="btn_size" title="Editor size">Size</button> 		
+</td><td><input hidden type="button" title="Go, Jump to line" onclick="proc_jump()" value="Jump">
+<button type="button" onclick="proc_size()" id="btn_size" title="Editor size">Editor Width</button> 		
 <button type="button" id="btn_editor_options" title="Options" onclick="proc_showoption()">Options</button>
 </td><td width="5">
 </td><td><button type="button" onclick="proc_upload()" title="Create PDF, F9 or Ctrl+Enter"><img src="configure.png" align="absbottom"> Create PDF</button> 
