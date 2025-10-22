@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">			
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>PostScript Viewer and Compiler</title>
+
+<meta name="description" content="This online viewer is a free app that makes it easier to view PostScript files in your browser. You can easily view or edit your PostScript file. This app only works locally without going through the server. It allows you to compile a PostScript to PDF file in your browser directly. Supports PS, EPS, GZ (GZipped PS) file.">
+<meta name="keywords" content="ps to pdf, eps to pdf, online postscript viewer, online postscript editor, gz postscript viewer, gzipped postscript viewer, postscript viewer for google drive, postscript compiler, online postscript compiler, html5 postscript compiler">
+
+<meta property="og:title" content="PostScript Viewer and Compiler"> 
+<meta property="og:description" content="This online viewer is a free app that makes it easier to view PostScript files in your browser. You can easily view or edit your PostScript file. This app only works locally without going through the server. It allows you to compile a PostScript to PDF file in your browser directly. Supports PS, EPS, GZ (GZipped PS) file.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="//ehubsoft.herokuapp.com/psviewer/">
+<meta property="og:image" content="//ehubsoft.herokuapp.com/psviewer/img/logo128.png">
+
+<link rel="shortcut icon" href="https://ehubsoft.herokuapp.com/psviewer/favicon.ico">
+
+<script src="cb=gapi.es" async=""></script><script src="cb=gapi_002.es" async=""></script><script>
+var gadb=false;
+var geditor_height=700;
+var geditor_width=700;
+</script>
+
+<link rel="stylesheet" href="neat.css">
+<link rel="stylesheet" href="elegant.css">
+<link rel="stylesheet" href="night.css">
+<link rel="stylesheet" href="monokai.css">
+<link rel="stylesheet" href="cobalt.css">
+<link rel="stylesheet" href="eclipse.css">
+<link rel="stylesheet" href="rubyblue.css">
+<link rel="stylesheet" href="codemirror.css">
+
+<script src="jquery.min.js"></script>
+<script src="all513.js"></script>
+<link href="jquery.alerts.css" rel="stylesheet" type="text/css" media="screen">
+<script src="jquery.alerts.js" type="text/javascript"></script>
+<script src="pako_inflate.min.js"></script>
+
+<style>
+body,table,td {
+	font-size:14px;
+    font-family: Arial, Helvetica, sans-serif; /*Trebuchet MS, Tahoma, Verdana*/
+}
+html, body{
+	background-color:white; /*#F2F2F2*/
+	margin:0;
+	width:100%;
+	height:100%;
+	overflow-y:hidden;
+}
+A:link    {color:#0000ff;text-decoration:none;}
+A:visited {color:#0000ff;text-decoration:none;}
+A:active  {color:#0000ff;text-decoration:underline;}
+A:hover  {color:#0000ff;text-decoration:underline;}
+.menulink{
+	font-size:16px;
+}
+.uploaded{color:green;}
+.error{color:#8A0808;}
+.welcome{color:#45616D;}
+.download{
+	font-size:19px;
+}
+.divopt{
+	padding:10px;position:absolute;border: 1px solid silver;overflow:hidden;background-color:white;-webkit-box-shadow: 0 0 10px #999;	-moz-box-shadow: 0 0 10px #999; box-shadow: 0 0 10px #999;
+}
+.searched {
+	background: #ffa;
+	background: rgba(255, 255, 0, .4);	
+}	
+.CodeMirror {
+	line-height: 1.1;
+	border: 1px solid #CDDCED;
+} 
+.breakpoints {width: .8em;}
+.CodeMirror-composing { border-bottom: 0px solid !important; }
+.CodeMirror-linenumber { min-width: 19px !important;}
+</style>
+
+<script>
+function setCookie(name, value, expires) { 
+	if(name!='c_prefer_ext') name='psv_'+name;
+  if (!expires) expires=1000*60*60*24*365*5;
+  path="/";
+  domain=document.domain;
+  secure=false;
+  var today = new Date(); 
+  today.setTime( today.getTime() ); 
+  var expires_date = new Date( today.getTime() + (expires) ); 
+  document.cookie = name + "=" +escape( value ) + 
+          ( ( expires ) ? ";expires=" + expires_date.toGMTString() : "" ) + //expires.toGMTString() 
+          ( ( path ) ? ";path=" + path : "" ) + 
+          ( ( domain ) ? ";domain=" + domain : "" ) + 
+          ( ( secure ) ? ";secure" : "" ); 
+} 
+
+function getCookie( name ) {
+	if(name!='c_prefer_ext') name='psv_'+name;
+  var nameOfCookie = name + "=";
+  var x = 0;
+  while ( x <= document.cookie.length ) {
+    var y = (x+nameOfCookie.length);
+    if ( document.cookie.substring( x, y ) == nameOfCookie ) {
+      if ( (endOfCookie=document.cookie.indexOf( ";", y )) == -1 )
+         endOfCookie = document.cookie.length;
+      return unescape( document.cookie.substring( y, endOfCookie ) );
+    }
+    x = document.cookie.indexOf( " ", x ) + 1;
+    if ( x == 0 ) break;
+  }
+  return "";
+}
+function setstorage(name,value){
+	if(name!='c_prefer_ext') name='psv_'+name;
+	if (window.localStorage){
+		localStorage[name]=value+'';
+	}else{
+		//setCookie(name, value, 1000*60*60*24*365*10); 
+	}
+}
+function getstorage(name){
+	if(name!='c_prefer_ext') name='psv_'+name;
+	var s;
+	if (window.localStorage){
+		s=localStorage[name];
+	}else{
+		//s=getCookie(name);
+	}
+	return s;
+}
+</script>
+<script src="main.js"></script>
+<script async="" src="googlesyndication_adsbygoogle.js"></script>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-1113541014872557",
+          enable_page_level_ads: true
+     });
+</script>
+<style type="text/css">.CodeMirror{line-height:normal !important;}.CodeMirror-scroll{overflow-x:hidden !important;padding-bottom:13px !important;}</style><style>.picker-dialog-frame{width:100%;height:100%;border:0;overflow:hidden}.picker-dialog-bg{position:absolute;top:0;left:0;background-color:#fff;z-index:1000}.picker-dialog{position:absolute;top:0;left:0;background-color:#fff;border:1px solid #acacac;width:auto;padding:0;z-index:1001;overflow:auto;box-shadow:0 4px 16px rgba(0,0,0,.2)}.picker-dialog-content{height:100%;font-size:0;padding:0}.picker-dialog-buttons,.picker-dialog-title{display:none}</style></head>
+
+<body>
+
+<table cellpadding="0" cellspacing="0"><tbody><tr>
+<td width="160" valign="top">
+<div id="tableleft" style="width:160px">
+<div style="margin:8px 0px 10px 8px">
+<a id="toptitle" href="https://ehubsoft.herokuapp.com/psviewer/" title="Go Home" style=""><span style="font-size:14px;font-family:Verdana, Arial;font-weight:bold">PostScript Viewer</span></a>
+</div>
+
+<div style="margin-top:10px;margin-right:10px">
+<script async="" src="googlesyndication_adsbygoogle.js" onerror="gadb=true;"></script>
+<ins class="adsbygoogle" style="display:inline-block;width:160px;height:600px" data-ad-client="ca-pub-1113541014872557" data-ad-slot="3281762247" data-adsbygoogle-status="done"><iframe id="aswift_0" style="height: 1px !important; max-height: 1px !important; max-width: 1px !important; width: 1px !important;"><iframe id="google_ads_frame0"></iframe></iframe></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
+</div>
+
+</td><td valign="top">
+
+<table id="tableedit" align="center" border="0" style="background: white;padding:3px 3px">
+<tbody><tr><td>
+<div id="tabletop">
+
+<table cellpadding="0" cellspacing="0" style="white-space:nowrap"><tbody><tr>
+<td><input type="text" style="width: 9em" id="query" autocomplete="off"> <input type="button" title="Find text" onclick="proc_search()" value="Find">
+</td><td width="5">
+</td><td><input type="text" style="width: 7em" id="replace" autocomplete="off"> <input type="button" title="Replace text" onclick="proc_replaceall()" value="Rep">
+</td><td width="5">
+</td><td><input type="button" title="Go, Jump to line" onclick="proc_jump()" value="Jump">
+<button type="button" onclick="proc_size()" id="btn_size" title="Editor size">Size</button> 		
+<button type="button" id="btn_editor_options" title="Options" onclick="proc_showoption()">Options</button>
+</td><td width="5">
+</td><td><button type="button" onclick="proc_upload()" title="Create PDF, F9 or Ctrl+Enter"><img src="configure.png" align="absbottom"> Create PDF</button> 
+</td><td><div id="status">&nbsp;<font style="color:red;font-size:13px">*Changed</font></div>
+</td><td width="5">
+</td><td><div id="dest" style="font-size:13px"></div>
+</td></tr></tbody></table>
+</div>
+
+</td></tr><tr><td>
+	<div id="div_scriptinject_script" style="width: 1030px; height: 874px;">
+		<textarea id="input" wrap="off" style="display: none;"></textarea><div class="CodeMirror cm-s-default CodeMirror-wrap" style="width: 1030px; height: 874px; font-size: 10pt;"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 498px; left: 109.133px;"><textarea style="position: absolute; padding: 0px; width: 1px; height: 1em; outline: none;" wrap="off" autocorrect="off" autocapitalize="none" spellcheck="false" tabindex="0">%!
+
+% translate page origin
+300 400 translate
+
+% --- concentric circles ---
+% loop over range
+% equivalent to linspace(0, 500, 10)
+0 10 500 {
+	% assign loop variable 
+    % (top of stack) to x
+	/x exch def
+    % draw a circle at (0, 0) with
+    % radius 150+x
+    0 0 150 x add 0 360 arc stroke
+} for
+
+
+% --- overlapping circles ---
+72 {
+	% rotate page under cursor
+	5 rotate
+    % save cursor pos. and page orientation
+    gsave
+    0 50 translate
+    0 0 100 0 360 arc stroke
+    grestore
+} repeat
+
+showpage</textarea></div><div class="CodeMirror-vscrollbar" cm-not-content="true" style="width: 18px; pointer-events: none; bottom: 0px;"><div style="min-width: 1px; height: 0px;"></div></div><div class="CodeMirror-hscrollbar" cm-not-content="true" style="height: 18px; pointer-events: none;"><div style="height: 100%; min-height: 1px; width: 0px;"></div></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1" draggable="true"><div class="CodeMirror-sizer" style="margin-left: 40px; margin-bottom: 0px; border-right-width: 30px; min-height: 518px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre><div class="CodeMirror-linenumber CodeMirror-gutter-elt"><div>1</div></div><div class="CodeMirror-linenumber CodeMirror-gutter-elt"><div>10</div></div><div class="CodeMirror-linenumber CodeMirror-gutter-elt"><div>9</div></div><div class="CodeMirror-linenumber CodeMirror-gutter-elt"><div>10</div></div></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"><div class="CodeMirror-selected" style="position: absolute; left: 4px; top: 0px; width: 982px; height: 17px;"></div><div class="CodeMirror-selected" style="position: absolute; left: 4px; top: 493px; width: 64.1333px; height: 17px;"></div><div class="CodeMirror-selected" style="position: absolute; left: 4px; top: 17px; width: 982px; height: 476px;"></div></div><div class="CodeMirror-cursors" style="visibility: hidden;"></div><div class="CodeMirror-code" style=""><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">1</div></div><pre class=" CodeMirror-line "><span>%!</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">2</div></div><pre class=" CodeMirror-line "><span><span cm-text="">​</span></span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">3</div></div><pre class=" CodeMirror-line "><span>% translate page origin</span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">4</div></div><pre class=" CodeMirror-line "><span>300 400 translate</span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">5</div></div><pre class=" CodeMirror-line "><span><span cm-text="">​</span></span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">6</div></div><pre class=" CodeMirror-line "><span>% --- concentric circles ---</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">7</div></div><pre class=" CodeMirror-line "><span>% loop over range</span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">8</div></div><pre class=" CodeMirror-line "><span>% equivalent to linspace(0, 500, 10)</span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">9</div></div><pre class=" CodeMirror-line "><span>0 10 500 {</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">10</div></div><pre class=" CodeMirror-line "><span><span class="cm-tab" role="presentation" cm-text="	">    </span>% assign loop variable </span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">11</div></div><pre class=" CodeMirror-line "><span>    % (top of stack) to x</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">12</div></div><pre class=" CodeMirror-line "><span><span class="cm-tab" role="presentation" cm-text="	">    </span>/x exch def</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">13</div></div><pre class=" CodeMirror-line "><span>    % draw a circle at (0, 0) with</span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">14</div></div><pre class=" CodeMirror-line "><span>    % radius 150+x</span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">15</div></div><pre class=" CodeMirror-line "><span>    0 0 150 x add 0 360 arc stroke</span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">16</div></div><pre class=" CodeMirror-line "><span>} for</span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">17</div></div><pre class=" CodeMirror-line "><span><span cm-text="">​</span></span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">18</div></div><pre class=" CodeMirror-line "><span><span cm-text="">​</span></span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">19</div></div><pre class=" CodeMirror-line "><span>% --- overlapping circles ---</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">20</div></div><pre class=" CodeMirror-line "><span>72 {</span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">21</div></div><pre class=" CodeMirror-line "><span><span class="cm-tab" role="presentation" cm-text="	">    </span>% rotate page under cursor</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">22</div></div><pre class=" CodeMirror-line "><span><span class="cm-tab" role="presentation" cm-text="	">    </span>5 rotate</span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">23</div></div><pre class=" CodeMirror-line "><span>    % save cursor pos. and page orientation</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">24</div></div><pre class=" CodeMirror-line "><span>    gsave</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">25</div></div><pre class=" CodeMirror-line "><span>    0 50 translate</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">26</div></div><pre class=" CodeMirror-line "><span>    0 0 100 0 360 arc stroke</span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">27</div></div><pre class=" CodeMirror-line "><span>    grestore</span></pre></div><div style="position: relative;" class=""><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">28</div></div><pre class=" CodeMirror-line "><span>} repeat</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">29</div></div><pre class=" CodeMirror-line "><span><span cm-text="">​</span></span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -40px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">30</div></div><pre class=" CodeMirror-line "><span>showpage</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; border-bottom: 0px solid transparent; top: 518px;"></div><div class="CodeMirror-gutters" style="height: 548px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 28px;"></div><div class="CodeMirror-gutter breakpoints"></div></div></div></div>
+	</div>		
+
+</td></tr><tr><td>
+
+<div id="tablebottom">
+<div id="dfile1" style="display:inline"><input type="file" id="fileload1" name="files[]" multiple="" style="width:190px" accept=".ps, .eps, .gz"></div>
+<script>document.getElementById("dfile1").innerHTML='<input type="file" id="fileload1" name="files[]" multiple style="width:190px" accept=".ps, .eps, .gz">';</script>
+<button type="button" id="gd_btn_picker" onclick="gd_open_picker()" title="Open a file from Google Drive" style=""><img src="product16.png" width="14" align="absmiddle"> Open</button>
+<button type="button" id="gd_btn_reopen" onclick="gd_reopen()" style="display:none;" title="Reopen the file loaded from drive.google.com"> Reopen</button>
+<button type="button" id="gd_btn_save" onclick="gd_save()" disabled="true"><img src="product16.png" width="14" align="absmiddle"> Save</button>
+<button type="button" id="gd_btn_saveas" onclick="gd_saveas()"><img src="product16.png" width="14" align="absmiddle"> Save as..</button>
+<button type="button" id="" onclick="var a=_getid('selfolder');if(a.style.display=='')a.style.display='none';else a.style.display='';proc_onresize();" title="Select a folder to save as..">Set Folder</button>
+<button type="button" title="Shortcuts for this editor" onclick="showhotkeyhelp()">Shortcuts</button>
+&nbsp;
+<select id="c_syntaxs" onchange="proc_syntaxs()" style="width:80px;margin-right:5px;display:none" title="Select the source type (HTML to PDF, TXT to PDF)">
+<option value="markdown">HTML (Default)
+</option><option value="" selected="selected">Plain Text
+</option></select>
+<select id="filecharset1" style="width:140px;display:none" title="Select text encoding (Default: Unicode -&gt; UTF-8)"><option value="">*Select Text Encoding</option><option value="auto">Auto detect a file encoding</option><optgroup label="Arabic"><option value="IBM-864">IBM-864</option><option value="IBM-864-I">IBM-864-I</option><option value="ISO-8859-6">ISO-8859-6</option><option value="ISO-8859-6-E">ISO-8859-6-E</option><option value="ISO-8859-6-I">ISO-8859-6-I</option><option value="MacArabic">MacArabic</option><option value="Windows-1256">Windows-1256</option></optgroup><optgroup label="Armenian"><option value="ARMSCII-8">ARMSCII-8</option></optgroup><optgroup label="Baltic"><option value="ISO-8859-13">ISO-8859-13</option><option value="ISO-8859-4">ISO-8859-4</option><option value="Windows-1257">Windows-1257</option></optgroup><optgroup label="Celtic"><option value="ISO-8859-14">ISO-8859-14</option></optgroup><optgroup label="Central European"><option value="IBM-852">IBM-852</option><option value="ISO-8859-2">ISO-8859-2</option><option value="MacCE">MacCE</option><option value="Windows-1250">Windows-1250</option></optgroup><optgroup label="Chinese Simplified"><option value="GB18030">GB18030</option><option value="GB2312">GB2312</option><option value="GBK">GBK</option><option value="HZ">HZ</option><option value="ISO-2022-CN">ISO-2022-CN</option></optgroup><optgroup label="Chinese Traditional"><option value="Big5">Big5</option><option value="Big5-HKSCS">Big5-HKSCS</option><option value="EUC-TW">EUC-TW</option></optgroup><optgroup label="Croatian"><option value="MacCroatian">MacCroatian</option></optgroup><optgroup label="Cyrillic"><option value="IBM-855">IBM-855</option><option value="ISO-8859-5">ISO-8859-5</option><option value="ISO-IR-111">ISO-IR-111</option><option value="KOI8-R">KOI8-R</option><option value="MacCyrillic">MacCyrillic</option><option value="Windows-1251">Windows-1251</option></optgroup><optgroup label="Cyrillic/Russian"><option value="CP-866">CP-866</option></optgroup><optgroup label="Cyrillic/Ukrainian"><option value="KOI8-U">KOI8-U</option><option value="MacUkrainian">MacUkrainian</option></optgroup><optgroup label="English"><option value="US-ASCII">US-ASCII</option></optgroup><optgroup label="Farsi"><option value="MacFarsi">MacFarsi</option></optgroup><optgroup label="Georgian"><option value="GEOSTD8">GEOSTD8</option></optgroup><optgroup label="Greek"><option value="ISO-8859-7">ISO-8859-7</option><option value="MacGreek">MacGreek</option><option value="Windows-1253">Windows-1253</option></optgroup><optgroup label="Gujarati"><option value="MacGujarati">MacGujarati</option></optgroup><optgroup label="Gurmukhi"><option value="MacGurmukhi">MacGurmukhi</option></optgroup><optgroup label="Hebrew"><option value="IBM-862">IBM-862</option><option value="ISO-8859-8-E">ISO-8859-8-E</option><option value="ISO-8859-8-I">ISO-8859-8-I</option><option value="MacHebrew">MacHebrew</option><option value="Windows-1255">Windows-1255</option></optgroup><optgroup label="Hebrew Visual"><option value="ISO-8859-8">ISO-8859-8</option></optgroup><optgroup label="Hindi"><option value="MacDevanagari">MacDevanagari</option><option value="SunDevanagari">SunDevanagari</option></optgroup><optgroup label="Icelandic"><option value="MacIcelandic">MacIcelandic</option></optgroup><optgroup label="Japanese"><option value="EUC-JP">EUC-JP</option><option value="ISO-2022-JP">ISO-2022-JP</option><option value="Shift_JIS">Shift_JIS</option></optgroup><optgroup label="Korean"><option value="EUC-KR">EUC-KR</option><option value="ISO-2022-KR">ISO-2022-KR</option><option value="JOHAB">JOHAB</option><option value="UHC">UHC</option></optgroup><optgroup label="Nordic"><option value="ISO-8859-10">ISO-8859-10</option></optgroup><optgroup label="Romanian"><option value="ISO-8859-16">ISO-8859-16</option><option value="MacRomanian">MacRomanian</option></optgroup><optgroup label="South European"><option value="ISO-8859-3">ISO-8859-3</option></optgroup><optgroup label="Thai"><option value="IBM-874">IBM-874</option><option value="ISO-8859-11">ISO-8859-11</option><option value="TIS-620">TIS-620</option><option value="Windows-874">Windows-874</option></optgroup><optgroup label="Turkish"><option value="IBM-857">IBM-857</option><option value="ISO-8859-9">ISO-8859-9</option><option value="MacTurkish">MacTurkish</option><option value="Windows-1254">Windows-1254</option></optgroup><optgroup label="Unicode"><option value="UTF-7">UTF-7</option><option value="UTF-8" selected="selected">UTF-8 (Default)</option><option value="auto">Auto detect a file encoding</option></optgroup><optgroup label="Vietnamese"><option value="TCVN">TCVN</option><option value="VISCII">VISCII</option><option value="VPS">VPS</option><option value="Windows-1258">Windows-1258</option></optgroup><optgroup label="Western"><option value="IBM-850">IBM-850</option><option value="ISO-8859-1">ISO-8859-1</option><option value="ISO-8859-15">ISO-8859-15</option><option value="MacRoman">MacRoman</option><option value="Windows-1252">Windows-1252</option></optgroup></select><button type="button" id="filecharsetbtn" onclick="filecharset1_onchange()" style="display:none">OK</button>
+
+<table id="selfolder" cellpadding="0" cellspacing="0" style="margin-top:2px;display:none"><tbody><tr>
+<td><button type="button" onclick="gd_open_picker(2)" title="Select a Google Drive folder to save as...">Select a folder to save as..</button> <button type="button" onclick="gd_folderid='';_getid('userfolder').innerHTML=this.title;setstorage('c_folder','');" title="Folder is not specified.">Reset</button>
+</td><td width="7">
+</td><td><div id="userfolder" style="width:400px;white-space:nowrap;overflow:hidden">Folder is not specified.</div>
+</td></tr></tbody></table>
+
+<table cellpadding="0" cellspacing="0" style="margin-top:2px"><tbody><tr>
+<td><div id="downlink" style="">Select a PS, EPS, GZ file from Computer or Drive.</div>
+</td><td width="10"></td><td><div id="msg" style="font-size:14px;width:330px;white-space:nowrap;overflow:hidden;border:0px solid red"></div>
+</td></tr></tbody></table>
+</div>
+
+</td></tr></tbody></table>
+
+</td><td valign="top">
+<table cellpadding="0" cellspacing="0" style="white-space:nowrap"><tbody><tr>
+<td><button id="btn_sheditor">Show/Hide Editor</button>&nbsp;
+</td><td><select id="c_pdfviewer" onchange="c_pdfviewer_onchange(this)" style="width:150px">
+	<option value="0">Default browser PDF viewer
+	</option><option value="1" selected="selected">Web PDF viewer
+</option></select>
+</td><td>&nbsp;&nbsp;
+</td><td><div id="dest2" style="font-size:14px"> &nbsp;<a id="pdfdlink" href="#" style="text-decoration:underline">Download</a> &nbsp;<a id="pdfdlink" href="blob:https://ehubsoft.herokuapp.com/a8a93ebe-8c26-4168-a260-dd1225214137" target="_blank" style="text-decoration:underline" title="Open a new window">New</a></div>
+</td><td>&nbsp;
+</td><td><div id="dest3" style="font-size:14px"></div>
+</td></tr></tbody></table>
+
+<iframe id="viewer" style="width: 707px; height: 933px;" frameborder="0" marginwidth="0" marginheight="0" leftmargin="0" topmargin="0"></iframe>
+
+</td></tr></tbody></table>
+
+
+<div id="editor_replace" class="divopt" style="z-index:10000;display:none;">
+<table>
+<tbody><tr><td colspan="100">Replace this search texts?
+</td></tr><tr><td><button type="button" id="editor_replace_yes">Yes(Y)</button>
+</td><td><button type="button" id="editor_replace_no">No(N)</button>
+</td><td><button type="button" id="editor_replace_stop">Stop(Esc)</button>
+</td></tr></tbody></table>
+</div>
+
+<div id="editor_options" class="divopt" style="z-index:10000;display:none;">
+<table style="width:400px">
+<tbody><tr>
+<td>Select another font
+</td><td><div id="sel_fontname"><select id="runscript_fontname"><option value="-">Custom font</option><option value="" selected="selected">Font None (Default)</option><option value="Arial">Arial</option><option value="Arial Narrow">Arial Narrow</option><option value="Arial Rounded MT Bold">Arial Rounded MT Bold</option><option value="Bitstream Vera Sans">Bitstream Vera Sans</option><option value="Bookman Old Style">Bookman Old Style</option><option value="Century">Century</option><option value="Century Gothic">Century Gothic</option><option value="Comic Sans MS">Comic Sans MS</option><option value="Courier">Courier</option><option value="Courier New">Courier New</option><option value="cursive">cursive</option><option value="DejaVu Sans">DejaVu Sans</option><option value="Lucida Console">Lucida Console</option><option value="monospace">monospace</option><option value="Monotype Corsiva">Monotype Corsiva</option><option value="sans serif">sans serif</option><option value="serif">serif</option><option value="Tahoma">Tahoma</option><option value="TeX">TeX</option><option value="Times">Times</option><option value="Times New Roman">Times New Roman</option><option value="Verdana">Verdana</option></select></div>
+</td></tr><tr>
+<td>Font size
+</td><td><div id="sel_fontsize"><select id="runscript_fontsize"><option value="8">8pt</option><option value="9">9pt</option><option value="10" selected="selected">10pt (Default)</option><option value="11">11pt</option><option value="12">12pt</option><option value="13">13pt</option><option value="14">14pt</option><option value="15">15pt</option><option value="16">16pt</option><option value="17">17pt</option><option value="18">18pt</option><option value="19">19pt</option><option value="20">20pt</option></select></div>
+</td></tr><tr>
+<td>Theme
+</td><td><select id="runscript_theme">
+    <option selected="selected" value="default">Default</option>
+    <option value="night">Night</option>
+    <option value="monokai">Monokai</option>
+    <option value="neat">Neat</option>
+    <option value="elegant">Elegant</option>
+    <option value="cobalt">Cobalt</option>
+    <option value="eclipse">Eclipse</option>
+    <option value="rubyblue">Rubyblue</option>
+</select>
+</td></tr><tr><td colspan="2"><label><input type="checkbox" id="runscript_activeline">Enable active line</label>
+</td></tr><tr><td colspan="2"><label><input type="checkbox" id="runscript_wrap">Enable line wrap</label>
+</td></tr><tr><td colspan="2"><label><input type="checkbox" id="runscript_case">Match case sensitive (Find, Replace)</label>
+</td></tr><tr><td colspan="2"><label><input type="checkbox" id="runscript_scon">Enable "save" confirm</label>
+</td></tr><tr><td colspan="2">
+</td></tr><tr><td colspan="2"><button type="button" onclick="proc_sample(true)" style="font-size:12px">Load Sample PostScript File</button>	
+</td></tr><tr><td colspan="2">Save text to Computer &nbsp;<a href="javascript:void(0);" id="btn_save2_link"><button type="button" onclick="gd_print(true)">Save as..</button></a>
+</td></tr><tr><td colspan="2" align="center"><button type="button" onclick="proc_closeoption()">Close</button>	
+</td></tr></tbody></table>
+</div>	
+
+<div id="div_size" class="divopt" style="z-index: 10000; left: 442px; top: 33px; display: none;">
+<table>
+	<tbody><tr><td>Width</td><td>&nbsp;<input type="range" title="Change the editor's width" id="size_width" min="680" max="1200" step="10" value="1030" style="width:150px" onchange="size_width_onchange(this)">
+	</td></tr><tr><td colspan="2" align="center">
+		<button style="font-size:13px" type="button" id="btn_closesize" onclick="proc_closesize()">Close</button>	
+		<button style="font-size:13px" type="button" id="btn_closesize" onclick="proc_default()">Default</button>	
+</td></tr></tbody></table>
+</div>
+
+<div id="div_output" class="divopt" style="z-index:10001;display:none;padding:4px;">
+<table>
+<tbody><tr><td><textarea id="output" style="width:680px;height:350px;font-size:13px" spellcheck="false"></textarea>	
+</td></tr><tr><td align="center">
+	<button style="font-size:16px" type="button" onclick="proc_closeoutput()">Close</button>	
+</td></tr></tbody></table>
+</div>
+
+<script>
+function _getfrmdoc(ifrm){
+	return (ifrm.contentWindow) ? ifrm.contentWindow : (ifrm.contentDocument.document) ? ifrm.contentDocument.document : ifrm.contentDocument;
+}
+function c_pdfviewer_onchange(f){
+	setCookie('c_pdfviewer',f.value);
+	proc_view();
+}
+
+var gxhr, gxworking, gloadtimer;
+var gtotalsize=0;
+function proc_pstopdf(blob1, cresp){
+	if(gadb){alert('Please disable the adblock for free use.');return;}
+	if(!window.URL || !window.Worker){
+		alert('Not supported on this browser. Please upgrade your browser.');
+		return;
+	}	
+	if(!gworkerloaded){
+		clearInterval(gloadtimer);
+		gloadtimer=setInterval(function(){
+			if(gworkerloaded){
+				clearInterval(gloadtimer);
+				proc_pstopdf(blob1, cresp);
+			}
+		},1000);
+		return;
+	}	
+	/*if(!gworkerloaded){
+		alert('Not loaded library. Please try again later.');return;
+	}*/
+	if(gxworking){
+		alert("It's working. Please try again later.");return;
+	}
+	if(gtotalsize>1500*40){
+		if(gworker){
+			gtotalsize=0;gworker.terminate();gworker=null;
+		}
+	}
+
+	_getid("dest2").innerHTML="<table cellpadding=0 cellspacing=0><tr><td><a href='#' id='u_cancel' style='font-size:14px;display:none'>Cancel</a>&nbsp; <td><img src='images/wait.gif' align='absmiddle'><td>&nbsp;<td><div id='gd_progress2'>Processing...</div></table>";	
+	_getid('dest3').innerHTML='';
+	_getid('output').value='';
+	gxworking=true;
+	var isworkerrun=false;
+	var logserr=[]; var logsall=[];	
+	var gerr=false;
+
+	function end(){
+		gxworking=false;
+		_getid("dest2").innerHTML="<table cellpadding=0 cellspacing=0><tr><div id='gd_progress2'></div></table>";	
+	}
+	function _viewlogall(isshow){
+		if(logsall.length>0){
+			_getid('output').value=logsall.join("\n");
+			if(isshow){
+				_getid("div_output").style.display='';
+				proc_onresize();
+			}
+			_getid('dest3').innerHTML=' &nbsp;<a href="#" onclick="_getid(\'div_output\').style.display=\'\';proc_onresize();return false" style="text-decoration:underline">View Log</a>';
+		}
+	}
+	function _progress(s,state){
+		if(!state) state='';
+		var a=_getid("gd_progress2");
+		if(a) a.innerHTML='<font class="'+state+'">'+henc(s)+'</font>';
+	}
+
+	function maingo(){
+		var c=_getid('u_cancel');
+		if(c){
+			c.style.display='';
+			c.onclick=function(){
+				end();
+				_progress('Canceled by user.','error');
+				if(isworkerrun && gworker){
+					gtotalsize=0;gworker.terminate();gworker=null;
+				}
+				return false;
+			}
+		}
+
+		function step1(){
+			_progress('Processing...');
+
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				var data=new Uint8Array(e.target.result);
+				isworkerrun=true;
+				
+				var arguments=['-dBATCH', '-dNOPAUSE', '-dSAFER', '-sDEVICE=pdfwrite', '-q', '-sOutputFile=output.pdf', '-c', '.setpdfwrite <</AlwaysEmbed [/Helvetica /Times-Roman]>> setdistillerparams'];
+				if(/\.(eps)$/i.test(cresp.title)) arguments.push('-dEPSCrop');
+				arguments.push('-f');
+				arguments.push('input.ps');
+
+				var files=[{"name": 'input.ps', "data": data}];
+				gworker.postMessage({
+					type: "command",
+					commands: '',
+					arguments: arguments, files: files
+				});
+			}
+			reader.onerror=function(e) {
+				end();
+				_progress("File Reading Error.",'error');
+			}
+			reader.readAsArrayBuffer(blob1);		
+		}
+
+		var isnew=false;
+		if(!gworker){
+			isnew=true; 
+			gworkerloaded=false;
+			_progress("Loading library... Please wait a moment.",'welcome');
+			gtotalsize=0;
+			gworker=new Worker('js/worker.js');
+		}else{
+			step1();
+		}
+		gworker.onerror = function(err){
+			isworkerrun=false;
+			var s='';
+			if(err && (typeof err === 'string' || err instanceof String)) s+=err;
+			else if(err && err.message) s+=err.message;
+			if(logsall.length>1000) logsall.splice(0,1);
+			logsall.push("Error. "+s);
+			_viewlogall(true);
+			gtotalsize=0;gworker.terminate();gworker=null;
+			end();
+		}
+		gworker.onmessage = function(event) {
+			var message = event.data;
+			if(message.type === "ready"){
+				//console.log('worker loaded.');
+				if(message.error){
+					end();
+					_progress(message.error,'error');
+				}else{
+					gworkerloaded=true;
+					var c=_getid('gd_progress2');
+					if(c) c.innerHTML='';
+					if(isnew) step1();
+				}
+			}else if(message.type === "progress"){
+				_progress(message.data || '');
+
+			}else if(message.type == "stdout" || message.type == "stderr"){
+				//console.log(message.type+': '+message.data);
+				var s=message.data || '';
+				if(/^(Received command\:)/.test(s) || /(wasm streaming|falling back to|ArrayBuffer instantiation)/i.test(s)){
+				}else{
+					if(logsall.length>1000) logsall.splice(0,1);
+					logsall.push(s);
+				}
+				if(/(Unrecoverable error, exit code)/.test(s)){
+					var arr=s.split(":");
+					if(arr.length>0) arr.splice(0,1);
+					logserr.push(trim(arr.join(":"))+', Please check the file is valid.');
+					gerr=true;
+				}else if(/(\[ Error\:)/.test(s)){
+					logserr.push(trim(s));
+				}
+			}else if(message.type == "done"){
+				//console.log(message);
+				if(message.totalsize) gtotalsize+=message.totalsize;
+				isworkerrun=false;
+				end();
+				if(message.error){
+					logserr.push("Error. "+(message.error+'').replace(/(http|https):\/\/(.*?)\.js/g,'asm.js').substr(0,250));
+				}else if(message.data){
+				  var blob=message.data;
+				  if(!(gerr && blob.size<4000)){
+					if(glastblob) window.URL.revokeObjectURL(glastblob);
+					glastblob=window.URL.createObjectURL(blob);
+
+					proc_view(glastblob, cresp.title);
+					_getid('dest2').innerHTML=' &nbsp;<a id="pdfdlink" href="#" style="text-decoration:underline">Download</a> &nbsp;<a id="pdfdlink" href="'+glastblob+'" target="_blank" style="text-decoration:underline" title="Open a new window">New</a>';
+					var a=_getid('pdfdlink');
+					if(a){
+						var filename=cresp.title+'.pdf';
+						a.onclick=function(){
+							if(navigator.msSaveBlob){
+								navigator.msSaveBlob(blob, filename);return false;
+							}else{
+								if(!window.URL){
+									alert("This browser does not support.");return false;	
+								}
+								this.download = filename;
+								if(issafari){
+									window.open(glastblob);return false;
+								}else{
+									this.target='_blank';
+									this.href=glastblob;
+								}
+							}
+						}
+					}
+				  }
+				}else{
+					_progress('Unknown Error.','error');	
+				}
+				if(logserr.length>0){
+					logsall.push("\n>> An error has occurred.");
+					_viewlogall(true);
+				}else{
+					_viewlogall(false);
+				}
+			}
+		}	
+	}
+	maingo();
+}
+
+function proc_upload(){
+	if(gxworking){
+		alert("It's working. Please try again later.");return;
+	}
+	var data=proc_geteditordata();
+	if (!data) return;
+	var title='No Name';
+	if(data.resp && data.resp.title){
+		title=getfilename(data.resp.title);
+	}
+	var editor=data.editor;
+	var str=editor.getValue() || '';
+	function go(){
+		var blob = new Blob([str], {encoding:"UTF-8",type:"application/postscript"});
+		proc_pstopdf(blob, {'title':title});
+	}
+
+	var p1=str.indexOf('mark currentfile eexec');
+	if(p1>=0 && str.indexOf('cleartomark',p1)>=0){	    
+		for (var i = 0; i < data.marked.length; ++i) data.marked[i].clear();
+		data.marked.length = 0;
+		data.lastPos=null;
+		data.lastQuery=null;
+		var text = 'mark currentfile eexec';
+ 
+		var cc=editor.getCursor();
+		var ffrom,fto,ff;
+		for (var cursor = editor.getSearchCursor(text,null,!g_option.matchcase); cursor.findNext();) {
+			ff=cursor.from();
+			data.marked.push(editor.markText(ff, cursor.to(), {className: "searched"}));
+			if (data.marked.length==1){
+				ffrom=ff;
+				fto=cursor.to();
+			}	
+			if(ffrom && cc && cursor && cc.line<=ff.line){
+				editor.setSelection(ff, cursor.to());  
+				if(ff.line){
+					editor.setCursor(Number(ff.line)-1);
+		    		editor.scrollIntoView(null,200);
+				}
+				ffrom=null;
+			}
+		  }
+		if(ffrom){
+			editor.setSelection(ffrom, fto);    
+			if(ffrom.line){
+				editor.setCursor(Number(ffrom.line)-1);
+				editor.scrollIntoView(null,200);
+			}
+		}
+		data.lastQuery = text;
+		
+		if (data.marked.length==0){
+		}else{
+			setTimeout(function(){
+				var s1="\"mark currentfile eexec ~ cleartomark\" \nThis code section is not supported.\nYou may need to remove this code to create a PDF file.\n\nOk: Ignore and Create PDF, Cancel: Cancel and Edit";
+				var answer=confirm(s1);				
+				if(!answer) return;
+				go();
+			},10);
+			return;
+		}
+	}
+	go();
+}
+function proc_sample(ischeck){
+	if(ischeck){
+		var data=proc_geteditordata();
+		if(data && data.changed){
+			var answer = confirm("Not saved. Would you just discard?");
+			if(!answer)return;
+		}
+	}
+	if(!gxhr) gxhr=new XMLHttpRequest();
+	else gxhr.abort();
+	var xhr = gxhr;
+	xhr.open('GET', 'sample/sample.ps', true);  
+	xhr.onload=function() {
+		if(this.status == 200 && this.response){
+			proc_newtab(this.response);
+		}
+	}
+	xhr.send();	
+}
+
+var timer_frame2, glastpdfurl, glastpdftitle, viewerinitTimer;
+function proc_view(url,title){	
+	function go(s){
+		var title2=title;
+		if(s.toLowerCase().indexOf("blob")!=0){
+			s+='?t='+(new Date()).getTime();
+			title2=title+".pdf";
+		}
+		var ifrm=_getid("viewer");
+		var a=_getfrmdoc(ifrm);
+		if(!a)return;
+		clearTimeout(viewerinitTimer);
+				var v=_getid('c_pdfviewer').value;
+				if(v==0){
+					ifrm.onload=function(){
+						if(navigator.userAgent.indexOf("Chrome")<0)return;
+						this.style.visibility="hidden";
+						var a=this;
+						clearTimeout(timer_frame2);
+						timer_frame2=setTimeout(function(){
+							a.style.visibility="visible";
+						},250);
+					}
+					if(!ischrome) a.location.replace('about:blank');
+					a.location.replace(s);
+				}else{
+					var c;
+					try{
+						c=a.proc_load;
+					}catch(err){
+						c='';
+					}
+					if(!c){
+						ifrm.onload=function(){
+							if(a.proc_load) a.proc_load(s,title2);
+						}
+						a.location.replace('pdfviewer/web/');
+					}else{
+						a.proc_load(s,title2);
+					}
+				}
+	}
+	if(!url) url=glastpdfurl;
+	if(!url) return;
+	if(!title) title=glastpdftitle;
+	if(!title) title='No Name';
+	glastpdfurl=url;
+	glastpdftitle=title;
+	go(url);
+}
+function setdownlink(s){
+	if(!s) s='Select a PS, EPS, GZ file from Computer or Drive.';
+	_getid("downlink").innerHTML=s;
+	proc_onresize();
+}
+</script>
+
+
+<style>
+.gd_div{background-color:#FFFFE1;position:absolute;overflow:hidden;-webkit-box-shadow: 0 0 25px #999;-moz-box-shadow: 0 0 25px #999;box-shadow: 0 0 25px #999;}
+</style>
+<iframe style="position:absolute;display:none" frameborder="0" id="gd_frame"></iframe>
+<div id="layer_message" class="gd_div" style="z-index:10001;display:none;" onmousedown="hide_message()"></div>
+<div id="gd_btn_login" class="gd_div" style="z-index:10000000;display:none;">
+<table>
+<tbody><tr><td align="center"><button type="button" onclick="gd_login_manual()" style="font-size:20px"><img src="product20.png" align="absmiddle"> Login &amp; Authorize</button> <button type="button" onclick="gd_login_close()" style="font-size:20px">Close</button>
+</td></tr><tr><td>To use this app, Please login to the Google Drive and authorize this app or website.
+<br>(Note: If your browser block or disable the third-party cookies, this login does not work correctly.)
+</td></tr></tbody></table>
+</div>
+<script>
+var CLIENT_ID = '858839298130-sqg0dbodobasul8l49had89nirtvpael.apps.googleusercontent.com';
+var SCOPES = [
+	'https://www.googleapis.com/auth/drive.install',
+	'https://www.googleapis.com/auth/drive.file'
+];
+var gd_developerKey='AIzaSyB8LU_q4-QIMlIL1Swv9aNzKgSBK2qvnVM';
+var gd_mimetype=""; //text/x-tex,text/plain,application/vnd.google-apps.document,application/vnd.google-apps.presentation
+var gd_export_extension=["text/html","text/plain","text/csv"];
+var gd_text_arr=[["ps,eps,","application/postscript"],["txt,text,","text/plain"],["htm,html,","text/html"],["csv,","text/csv"],["css,","text/css"],["yaml,","text/yaml"],["xml,fb2,","text/xml"],["js,","application/x-javascript"],["json,","application/json"],["tex,latex,","text/x-tex"],["py,","text/x-python"],["php,","application/x-httpd-php"],["java,","text/x-java"],["c,","text/x-csrc"],["cc,cpp,","text/x-c++src"],["pas,","text/x-pascal"],["pl,","text/x-perl"],["sql,","text/x-sql"],["smi,","application/smil"],["ics,ical,icalendar,","text/calendar"],["md,","text/x-markdown"],["md,","text/markdown"],["kml,","application/vnd.google-earth.kml+xml"],["gpx,","application/gpx+xml"],["mht,mhtml,","message/rfc822"]];
+var gd_state='';
+
+var gd_picker,gd_picker2,gd_folderid,gd_loaded,gd_pickerloaded,gd_lastprogress,gd_issupported,gd_isdownloading,gd_load_timer,gd_bloburl,gd_state2;
+var gd_loginexp=0;
+var gd_callback;
+var ismsie=false;
+if(navigator.appName!="Netscape"){
+	if(navigator.userAgent.indexOf("MSIE")>=0) ismsie=true;
+}
+if(navigator.userAgent.match(/Trident\//)) ismsie=true;
+
+function gd_btn_login2(e,callback){
+function go(a){
+	if(a.style.display==''){
+		var x=getScrollLeft()+((getWindowWidth()-a.clientWidth) / 2);
+		var y=getScrollTop()+((getWindowHeight()-a.clientHeight) / 2);
+		a.style["border"]="1px solid #000000";
+		a.style["padding"]="10px";
+		a.style.left=x+"px";
+		a.style.top=y+"px";
+		var b=_getid("gd_frame");
+		b.style.left=x+"px";
+		b.style.top=y+"px";
+		b.style.width=a.offsetWidth+"px";
+		b.style.height=a.offsetHeight+"px";
+		b.style.display='';
+	}
+}
+	go(_getid("gd_btn_login"));
+	setTimeout(function(){
+		go(_getid("gd_btn_login"));
+		if(callback)callback();
+	},10);
+}
+function gd_btn_login(isshow){
+	var a=_getid("gd_btn_login");
+	if(isshow){
+		a.style.display='';
+		gd_btn_login2();
+	}else{
+		a.style.display='none';
+		_getid("gd_frame").style.display='none';
+	}
+}
+function gd_login_close(){
+	gd_btn_login(false);
+	gd_state='';
+	setdownlink('');
+}
+function gd_login_manual(){
+	var p={'client_id': CLIENT_ID, 'scope': SCOPES.join(' '), 'immediate': false};
+	if(gd_userId){p['login_hint']=gd_userId;p['authuser']=-1;}
+	gapi.auth.authorize(p, function (authResult){ 
+		if (authResult && !authResult.error){
+			gd_loginexp=(new Date()).getTime()+parseInt(authResult.expires_in*0.7*1000);
+			gd_btn_login(false);gd_info();
+			show_message("Login ok!!");
+			if(gd_callback) gd_callback(true);
+			else gd_open_state(true);
+		}else{
+			gd_btn_login(true);
+			show_message("Login failed!!");
+		}
+	});
+}
+function gd_login(callback,react){
+	if(gd_loginexp==0 || gd_loginexp<(new Date()).getTime()){
+	}else{
+		callback(true);
+		return;
+	}
+	var p={'client_id': CLIENT_ID, 'scope': SCOPES.join(' '), 'immediate': true};
+	if(gd_userId){p['login_hint']=gd_userId;p['authuser']=-1;}
+	gapi.auth.authorize(p, function (authResult){
+		if (authResult && !authResult.error){
+			gd_loginexp=(new Date()).getTime()+parseInt(authResult.expires_in*0.7*1000);
+			gd_btn_login(false);gd_info();
+			callback(true);
+		}else{
+			show_message("Login failed!!");
+			gd_btn_login(true);
+			callback(false);
+			if(react) gd_callback=callback;
+			else gd_callback=null;
+		}
+	});
+}
+
+function gd_loadpicker() {		
+	gapi.load('picker',{'callback': function(){
+			gd_pickerloaded=true;
+		}
+	});	
+}
+function gd_createpicker(kind) {
+	function gd_pickercallback(data) {
+		if (data.action == google.picker.Action.PICKED) {
+			if(data.docs && data.docs.length>0 && data.docs[0].id){
+				if(!kind){
+			        var fileId = data.docs[0].id;
+					gd_loadfile(fileId);
+				}else if(kind==2){
+					if(data.docs[0].type!="folder"){
+						alert("It's not a folder.");
+						return;
+					}
+					gd_folderid=data.docs[0].id;
+					var c={};
+					c.folderid=gd_folderid;
+					c.name=data.docs[0].name;					
+					_getid('userfolder').innerHTML='Save folder: <a href="'+gd_weburl()+'#folders/'+gd_folderid+'" target="_blank" onclick="gd_clickweburl(this)" title="Folder ID: '+gd_folderid+'">'+henc(c.name)+'</a>';
+					if(window.JSON) setstorage("c_folder",JSON.stringify(c));
+				}
+			}
+		}
+	}
+	var access_token=gapi.auth.getToken().access_token;
+	if(!access_token){
+		alert('Error!! No access token.');
+		return;
+	}
+	if(!kind){
+	 if(!gd_picker){
+	  var view2 = new google.picker.DocsView(google.picker.ViewId.DOCS);
+	  if(gd_mimetype) view2.setMimeTypes(gd_mimetype);
+	  view2.setMode(google.picker.DocsViewMode.LIST);
+
+		var view4 = new google.picker.DocsView();
+		view4.setIncludeFolders(true);
+		view4.setParent("root");
+		view4.setMimeTypes(gd_mimetype);
+		view4.setMode(google.picker.DocsViewMode.LIST);
+		var view5 = new google.picker.View(google.picker.ViewId.RECENTLY_PICKED);
+
+      gd_picker = new google.picker.PickerBuilder()
+		  .setLocale("en") //window.navigator.language || window.navigator.userLanguage || "en"
+		  .setAppId(CLIENT_ID.split("-")[0])
+          .setOAuthToken(access_token)
+          .addView(view2)
+		  .addView(view4)
+		  .addView(view5)
+          .addView(new google.picker.DocsUploadView())
+          .setDeveloperKey(gd_developerKey)
+          .setCallback(gd_pickercallback)
+          .build();
+	 }
+	 gd_picker.setVisible(true);
+	}else if(kind==2){
+	  if(!gd_picker2){
+		var docsView = new google.picker.DocsView()
+          .setIncludeFolders(true) 
+		  .setParent("root")
+          .setMimeTypes('application/vnd.google-apps.folder')
+		  .setMode(google.picker.DocsViewMode.LIST)
+          .setSelectFolderEnabled(true);
+		var view5 = new google.picker.View(google.picker.ViewId.RECENTLY_PICKED);
+
+        gd_picker2 = new google.picker.PickerBuilder()
+		  .setLocale("en") 
+		  .setAppId(CLIENT_ID.split("-")[0])
+          .setOAuthToken(access_token)
+		  .setDeveloperKey(gd_developerKey)
+		  .setTitle("Select a folder to save as..")
+          .addView(docsView)
+		  .addView(view5)
+          .setCallback(gd_pickercallback)
+          .build();
+	  }
+	  gd_picker2.setVisible(true);
+	}
+}
+
+function gd_loadfile(fileId,isfirst){
+	if(gd_isdownloading){
+		alert("It's downloading. Please try again in a few minutes. or Cancel the current download.");
+		return;
+	}
+	setdownlink("<table cellpadding=0 cellspacing=0><tr><td><div id='gd_progress'>Ready...</div></table>");
+	gapi.client.load('drive', 'v2', function() {
+		var request = gapi.client.drive.files.get({
+			'fileId': fileId
+		});
+		request.execute(function(resp){
+			function end(){
+				gd_isdownloading=false;
+				clearTimeout(messagetimer);
+				hide_message();
+				var a=_getid("downlink");
+				if(a.innerHTML && a.innerHTML.indexOf("adownlink")<0){
+					setdownlink('');
+				}
+			}
+			function error(s){
+				alert(s);
+			}
+			//console.log(resp);
+			/*if(isfirst){
+				if(getfileext(resp.title || '')=='pdf' || (resp.mimeType && resp.mimeType.indexOf("/pdf")>=0)){
+					end();
+					return;
+				}
+			}*/
+			var downloadurl;
+			if(resp.downloadUrl){
+				downloadurl='https://www.googleapis.com/drive/v2/files/'+resp.id+'?alt=media';//resp.downloadUrl;
+			}else if(resp.exportLinks){
+				for (x in resp.exportLinks){	
+					for(var i = 0; i < gd_export_extension.length; i++){    
+						if(x.toLowerCase().indexOf(gd_export_extension[i])>=0){
+							downloadurl=resp.exportLinks[x];
+							break;
+						}						
+					}					
+					if(downloadurl)break;
+				}
+			}
+			var accessToken = gapi.auth.getToken().access_token;
+			if(!accessToken){
+				end();
+				alert('Error!! No access token.');
+				return;
+			}			
+			var fmaxsize=gmaxsize; 
+			var ispdf=false;
+			var ext=getfileext(resp.title || '');
+			if(ext=='pdf' || (resp.mimeType && resp.mimeType.indexOf("/pdf")>=0)){
+				ispdf=true;
+			}else 	if(ext=='gz' && resp.fileSize && parseInt(resp.fileSize)>gmaxsizeviewgz*1024*1024){
+				end();
+				alert('The GZ file size is too large to convert and view. ('+gmaxsizeviewgz+' MB limit)');
+				return;
+			}else 	if(resp.fileSize && parseInt(resp.fileSize)>gmaxsizeview*1024*1024){
+				end();
+				alert('The file size is too large to convert and view. ('+gmaxsizeview+' MB limit)');
+				return;
+			}			
+			if(downloadurl){				
+					function setdown(url){
+						setdownlink('&nbsp;<font style="color:green">Download completed.</font>');
+					}
+					gd_isdownloading=true;
+					setdownlink("<table cellpadding=0 cellspacing=0><tr><td><img src='images/wait.gif' align='absmiddle'><td>&nbsp;<td><div id='gd_progress'>Downloading...</div><td>&nbsp; <a href='#' id='gd_cancel' style='font-size:15px;display:none'>Cancel</a></table>");
+
+				try{
+					var xhr = new XMLHttpRequest();
+					var c=_getid('gd_cancel');
+					if(c){
+						c.style.display='';
+						c.onclick=function(){
+							xhr.abort(); 
+							end();
+							return false;
+						}
+					}
+					gd_lastprogress=(new Date()).getTime();
+					var su=downloadurl;//+'&access_token='+encodeURIComponent(accessToken);
+					/*if(resp.mimeType=='application/vnd.google-apps.spreadsheet'){
+						su='https://speedtesting.herokuapp.com/proxyrss/geturl2.php?max=7&url='+encodeURIComponent(su);
+					}*/
+					xhr.open('GET', su);
+					if(gcssupport || ispdf) xhr.responseType = 'arraybuffer';
+					xhr.onprogress=function(event){
+						if(gd_lastprogress){
+							var elaspetime = new Date();
+							var dt=(elaspetime.getTime()-gd_lastprogress)/1000;
+							if(dt<1)return;
+							gd_lastprogress=elaspetime.getTime();
+						}
+						var a=event;
+						var total=a.totalSize || resp.fileSize || 0;//a.total 
+						var current=a.position || a.loaded  || 0;
+						var c=_getid('gd_progress');
+						if(c) c.innerHTML='Downloading... ('+number_format(current)+'/'+number_format(total)+')';
+					};
+					xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+				    xhr.onload = function(){
+						end();
+						if(this.status == 200){
+							setdown();
+							if(gcssupport || ispdf){
+								if(ispdf){
+									//show_message('This file is PDF. You can not edit directly in this app.','','','',4000);
+									var blob=new Blob([this.response], {type : 'application/pdf'});
+									if(glastblob) window.URL.revokeObjectURL(glastblob);
+									glastblob=window.URL.createObjectURL(blob);
+									proc_view(glastblob, resp.title || resp.originalFilename);
+									_getid('dest2').innerHTML='';
+									_getid('dest3').innerHTML='';
+									return;
+								}
+								var blob;
+								function go1(){
+									proc_pstopdf(blob, resp);
+									if(blob.size>fmaxsize*1024*1024){
+										proc_newtab('%% The file size is too large to edit directly ('+fmaxsize+' MB limit). Supports only converting to a PDF.',resp);
+										_getid('gd_btn_save').disabled=false;
+										gd_setname(resp);
+										g_blob1=blob;
+										return;
+									}
+									_blobtotext(blob,'UTF-8',function(s,encdetect){
+										//Metal_whistle_vector_illustration.eps
+										if(!/^(\s)*%!PS/i.test(s)){
+											if(s.length>40*1024) s=s.substr(0,40*1024)+"\n...more";
+											s='%% This file does not support editing directly. Supports only converting to a PDF.\n\n'+s;	
+											encdetect=false;
+										}
+										proc_newtab(s, resp);
+										_getid('gd_btn_save').disabled=false;
+										gd_setname(resp);
+										g_blob1=blob;
+										if(encdetect){
+											var answer=confirm("Text encoding has detected ("+encdetect+").\n\nDo you want to change the encoding automatically?");
+											if(answer){
+												_getid('filecharset1').value=encdetect;
+												filecharset1_onchange();
+											}
+										}
+									},function(){
+										alert(resp.title+'\nThere was an error.');
+									},resp);
+								}
+								if(ext=='gz'){
+									show_message('Decompress a GZIP file....','','','',1000*60*60);
+									var ps=new Uint8Array(this.response);
+									setTimeout(function(){										
+										try{										
+											var uncompressed=pako.ungzip(ps);
+											blob=new Blob([uncompressed]);
+											go1();
+										}catch(err){
+											alert(err+'');
+										}
+										hide_message();
+									},10);
+								}else{
+									blob=new Blob([this.response]);
+									go1();
+								}
+							}else{
+								proc_newtab(this.response, resp);
+								_getid('gd_btn_save').disabled=false;
+								gd_setname(resp);
+							}
+						}else{
+							var s="Error (status) " + this.status + "("+this.statusText+") occurred while receiving the file.";
+							error(s);
+						}
+					};
+					xhr.onerror = function(e){      
+						end();
+						var s="Error " + e.target.status + " occurred while receiving the file.";
+						error(s);
+					};
+					xhr.send();
+				}catch(err){
+					end();
+					alert(err+'\n\nor This browser does not support. Please upgrade your browser.');
+				}
+			}else{
+				end();
+				if(resp.error && resp.error.message){
+					alert(resp.error.message);
+				}else{
+					alert('Error!! Can not find a download URL for text-type file.');
+				}
+			}
+		});
+	});
+}
+function gd_open_picker(kind){
+	if(!gd_issupported){
+		alert("This browser does not support.");
+		return;
+	}
+	if(!gd_loaded || !gd_pickerloaded){
+		if(!gd_load_timer) gd_loadscript(function(){gd_open_picker(kind);});
+		else alert('Not loaded library. Please try again in a few minutes.');
+		return;
+	}
+	if(!kind){
+		var data=proc_geteditordata();
+		if(data && data.changed){
+			var answer = confirm("Not saved. Would you just discard?");
+			if(!answer)return;
+		}
+	}
+	gd_login(function(result){
+		if(!result) return;
+		gd_createpicker(kind);
+	},true);
+}
+
+function proc_insert(data){
+	var title;
+	if(data.resp && data.resp.title) title=data.resp.title;
+	if(!title) title=getstorage('c_last_title') || 'No Name.ps';
+	jPrompt('Enter a filename or title.\n<b>Target Folder</b>\n'+_getid('userfolder').innerHTML, title, document.title, function(r){
+		title=r;
+		go();
+	});
+function go(){
+	if(!title)return;	
+	setstorage('c_last_title',title);
+
+	function getMimetype(s){
+		if(!s)s='';
+		var ext='';
+		var arr=s.split('.');
+		if(arr.length>1) ext = arr.pop() || '';
+		else return;
+		ext=','+ext.toLowerCase()+',';
+		for(var i=0; i < gd_text_arr.length; i++){
+			if((','+gd_text_arr[i][0]).indexOf(ext)>=0){
+				return gd_text_arr[i][1];
+			}
+		}
+	}
+
+	function insertFile2(callback){
+        var boundary = '-------314159265358979323846';
+        var delimiter = "\r\n--" + boundary + "\r\n";
+        var close_delim = "\r\n--" + boundary + "--";
+
+          var contentType = getMimetype(title) || 'application/postscript';		  
+          var metadata = {
+            'title': title,
+            'mimeType': contentType
+          };
+		if(gd_folderid) metadata.parents=[{"id":gd_folderid}];
+		else if(data.resp && data.resp.parents && data.resp.parents[0] && data.resp.parents[0].id) metadata.parents=[{"id":data.resp.parents[0].id}];
+
+          var base64Data = data.editor.getValue();
+
+          var multipartRequestBody =
+              delimiter +
+              'Content-Type: application/json\r\n\r\n' +
+              JSON.stringify(metadata) +
+              delimiter +
+              'Content-Type: ' + 'application/postscript' + '\r\n' +
+              //'Content-Transfer-Encoding: base64\r\n' +
+              '\r\n' +
+              base64Data +
+              close_delim;
+
+          var request = gapi.client.request({
+              'path': '/upload/drive/v2/files',
+              'method': 'POST',
+              'params': {'uploadType': 'multipart', 'convert': false},
+              'headers': {
+                'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
+              },
+              'body': multipartRequestBody});
+
+          if (!callback) {
+            callback = function(file) {
+            };
+          }
+          request.execute(callback);
+	}
+	
+	gd_startsave();
+	insertFile2(function(result){
+		gd_endsave();
+		if(result.error){
+			_getid('gd_btn_save').disabled=true;
+			var s='Error. ';
+			setdownlink('&nbsp;<font style="color:green">'+s+'</font>');
+			if(result.error.message) s+=result.error.message+' ';
+			if(result.error.code==401){
+				s+='Login or Authorize Error.';
+			}else{
+				s+='or Check the target folder.';
+			}
+			alert(s);
+		}else if(result.downloadUrl || result.exportLinks){
+			data.resp=result;
+			gd_saveok(data);
+		}				
+	});
+}
+}
+
+function proc_update(data){
+function updateFile2(callback) {
+  var boundary = '-------314159265358979323846';
+  var delimiter = "\r\n--" + boundary + "\r\n";
+  var close_delim = "\r\n--" + boundary + "--";
+
+    var contentType = 'application/postscript';
+    var base64Data = data.editor.getValue();
+
+    var multipartRequestBody =
+        delimiter +
+        'Content-Type: application/json\r\n\r\n' +
+        JSON.stringify(data.resp) +
+        delimiter +
+        'Content-Type: ' + contentType + '\r\n' +
+        //'Content-Transfer-Encoding: base64\r\n' +
+        '\r\n' +
+        base64Data +
+        close_delim;
+
+    var request = gapi.client.request({
+        'path': '/upload/drive/v2/files/' + data.resp.id,
+        'method': 'PUT',
+        'params': {'uploadType': 'multipart', 'alt': 'json', 'convert': false},
+        'headers': {
+          'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
+        },
+        'body': multipartRequestBody});
+    if (!callback) {
+      callback = function(file) {
+      };
+    }
+    request.execute(callback);
+}
+
+	gd_startsave();
+	updateFile2(function(result){
+		//console.log(result);
+		gd_endsave();
+		if(result.error){
+			var s='Error. ';
+			setdownlink('&nbsp;<font style="color:green">'+s+'</font>');
+			if(result.error.message) s+=result.error.message+' ';
+			if(result.error.code==401){
+				s+='Login or Authorize Error.';
+			}else if(result.error.code==500){ //not exist
+			}
+			alert(s);
+		}else if(result.downloadUrl || result.exportLinks){
+			gd_saveok(data);			
+		}							
+	});
+}
+function gd_startsave(){
+	_getid('gd_btn_save').disabled=true;
+	_getid('gd_btn_saveas').disabled=true;
+	_getid('gd_btn_picker').disabled=true;
+	setdownlink("<table cellpadding=0 cellspacing=0><tr><td><img src='images/wait.gif' align='absmiddle'><td>&nbsp;<td><div id='gd_progress'>Saving...</div></table>");
+}
+function gd_endsave(){
+	_getid('gd_btn_save').disabled=false;
+	_getid('gd_btn_saveas').disabled=false;
+	_getid('gd_btn_picker').disabled=false;
+	setdownlink("");
+}
+function gd_setname(resp){
+	var s='';
+	if(resp.labels && resp.labels.trashed){
+		s+='<a href="'+gd_weburl()+'#trash" target="_blank" onclick="gd_clickweburl(this)" title="Show folder">Trashed,</a>&nbsp;';	
+	}else{
+		var p=resp.parents;
+		if(p && p[0] && p[0].id) s+='<a href="'+gd_weburl()+'#folders/'+p[0].id+'" target="_blank" onclick="gd_clickweburl(this)" title="Show folder">Folder,</a>&nbsp;';	
+	}
+	var s1=henc(resp.title);
+	if(resp.alternateLink) s+='<a href="'+resp.alternateLink+'" target="_blank" title="Open link">'+s1+'</a>';	
+	else s+=s1;
+	_getid("msg").innerHTML=s;
+}
+function gd_saveok(data){
+	setdownlink('&nbsp;<font style="color:green">Save completed.</font>');
+	gd_setname(data.resp);
+	data.changed=false;
+	//data.editor.clearHistory();
+	data.editor.markClean();
+	proc_displaytab();
+}
+function gd_save(){
+	function checkMimetype(s){
+		if(!s)s='';
+		s=s.toLowerCase();
+		for(var i=0; i < gd_text_arr.length; i++){
+			if(gd_text_arr[i][1]==s){
+				return true;
+			}
+		}
+	}
+
+	if(_getid("gd_btn_save").disabled)return;
+	var data=proc_geteditordata();
+	if (!data || !data.resp || !data.editor) return;
+	if(!checkMimetype(data.resp.mimeType)){
+		var answer=confirm('Type of this file: "'+data.resp.mimeType+'"\n\nWarning, This file may not be text-type file. Would you like to overwrite it?');
+		if(!answer)return;
+	}
+	var answer=true;
+	if(gcschanged){
+		answer=confirm("You seem to have changed the text encoding. The text file will be saved only in UTF-8 encoding.\nThis text file encoding will be converted to UTF-8 type.\n\nDo you want to save this document?");
+	}else if(g_option.saveconfirm){
+		answer=confirm("Do you want to save this document?\n\nAre you sure?");
+	}	
+	if(!answer)return;
+	gd_login(function(result){
+		if(!result) return;
+		proc_update(data);
+	},true);
+}
+function gd_saveas(){
+	if(!gd_issupported){
+		alert("This browser does not support.");
+		return;
+	}
+	if(!gd_loaded || !gd_pickerloaded){
+		if(!gd_load_timer) gd_loadscript(gd_saveas);
+		else alert('Not loaded library. Please try again in a few minutes.');
+		return;
+	}
+	var data=proc_geteditordata();
+	if (!data || !data.editor) return;
+	gd_login(function(result){
+		if(!result) return;
+		proc_insert(data);
+	},true);
+}
+function gd_open_state(force){
+	var s=gd_state;
+	if(s){
+		if(!gd_issupported){
+			gd_state='';
+			alert("This browser does not support.");
+			return;
+		}
+		s=decodeURIComponent(s);
+		try{
+			var a=JSON.parse(s);
+			var fileId;
+			if(a.ids) fileId=a.ids[0];
+			if(!fileId && a.exportIds) fileId=a.exportIds[0];
+			if(fileId){
+				gd_login(function(result){
+					if(gd_open2 && !force)return;
+					gd_open2=true;
+					if(!result) return;
+					//_getid('gd_btn_reopen').style.display='';
+					gd_state='';
+					gd_loadfile(fileId,true);
+				});				
+			}
+		}catch(err){
+		}
+	}
+}
+function gd_clientload(){
+	gd_loaded=true;
+	if (window.addEventListener){
+		window.addEventListener("resize", gd_btn_login2, false);
+	}else if (window.attachEvent){
+		window.attachEvent("onresize", gd_btn_login2);
+	}
+	gd_open_state();
+}
+var gd_open2;
+function gd_open_state2(){
+	setTimeout(function(){
+		if(!gd_open2)gd_open_state();
+	}, 1000);
+}
+function _inject(s){
+	var o = document.createElement('scri' + 'pt');
+	o.setAttribute('src', s);
+	o.setAttribute('type', 'text/javascript');
+	document.body.appendChild(o);
+}
+function gd_loadscript(callback){
+	if(gd_load_timer)return;
+	if(gd_loaded && gd_pickerloaded)return;
+	gd_load_timer=setInterval(function(){
+		if(gd_loaded && gd_pickerloaded){
+			clearInterval(gd_load_timer);
+			if(callback) callback();
+		}
+	},100);
+	_inject('https://apis.google.com/js/client.js?onload=gd_clientload');
+	_inject('https://apis.google.com/js/api.js?onload=gd_loadpicker');	
+}
+function gd_reopen(){
+	if(gd_state2){
+		var answer = confirm("Reopen this file loaded from Google Drive.\n\nAre you sure?");
+		if(!answer)return;
+		var m="";
+		var s='?';
+		if(m) s+='m='+m+'&';
+		s+='state='+encodeURIComponent(gd_state2);
+		location.href=s;
+	}
+}
+function gd_dblclick(){
+	function dblclick(){
+		try{
+			if(gd_picker)gd_picker.setVisible(false);
+			if(gd_picker2)gd_picker2.setVisible(false);
+		}catch(err){}
+	}
+	function keydown(e){
+		if(!e)e=window.event;
+		if(e && e.keyCode==27) dblclick();
+	}
+	if(window.addEventListener){
+		document.addEventListener("dblclick", dblclick, false);
+		document.addEventListener("keydown", keydown, false);
+	}else if(window.attachEvent){
+		document.attachEvent("ondblclick", dblclick);
+		document.attachEvent("onkeydown", keydown);
+	}
+}
+var gd_userId,gd_email;
+function gd_weburl(){
+	var s;
+	if(gd_email) s='https://drive.google.com/?authuser='+encodeURIComponent(gd_email);
+	else s='https://drive.google.com/';
+	return s;
+}
+function gd_clickweburl(f){
+	var s=f.href || '';
+	var p1=s.indexOf('#');
+	if(p1<0) s='';
+	else s=s.substr(p1,s.length);
+	f.href=gd_weburl()+s;
+}
+function gd_info(){
+	if(gd_email)return;
+	gapi.client.load('drive', 'v2', function(){
+		var request = gapi.client.drive.about.get();
+		request.execute(function(resp) {
+			if(resp && resp.user){
+				if(gd_email)return;
+				gd_email=resp.user.emailAddress;
+				if(gd_email){
+					var a=_getid('gd_btn_picker');
+					var b=_getid('gd_btn_reopen');
+					if(a)a.title=a.title+' ('+gd_email+')';
+					if(b)b.title=b.title+' ('+gd_email+')';
+				}				
+			}
+		});
+	});
+}
+function gd_init(){
+	gd_dblclick();
+	gd_state2=gd_state;
+	if(!window.XMLHttpRequest || !window.FileReader || !window.URL){
+	}else{
+		gd_issupported=true;
+		if(gd_state){
+			try{
+				var a=JSON.parse(gd_state);
+				gd_userId=a.userId;
+				if(a.ids || a.exportIds){
+					setdownlink("<table cellpadding=0 cellspacing=0><tr><td><div id='gd_progress'>Ready...</div></table>");
+				}
+			}catch(err){}			
+		}else{
+			proc_sample();
+		}
+		if(window.addEventListener) window.addEventListener("load", gd_open_state2, false);
+		else if (window.attachEvent) window.attachEvent("onload", gd_open_state2);
+		gd_loadscript();
+	}
+	var s=getstorage("c_folder");
+	var c={};
+	try{c=JSON.parse(s);}catch(err){}
+	if(c && c.folderid && c.name){
+		gd_folderid=c.folderid;
+		_getid('userfolder').innerHTML='Save folder: <a href="'+gd_weburl()+'#folders/'+gd_folderid+'" target="_blank" onclick="gd_clickweburl(this)" title="Folder ID: '+gd_folderid+'">'+henc(c.name)+'</a>';
+	}
+}
+gd_init();
+init();
+
+var detectTimer;
+function _detect(){
+	if(!g_blob1){
+		alert('Please read the raw file first.');return;
+	}
+	if(typeof jschardet == 'undefined' && !detectTimer){
+		show_message('Loading library.. Please Wait...');
+		clearInterval(detectTimer);
+		var k=0;
+		detectTimer=setInterval(function(){
+			k++;
+			if(k % 8==0) show_message('Loading library.. Please Wait...');
+			if(typeof jschardet != 'undefined'){
+				clearInterval(detectTimer);
+				hide_message();
+				go();
+			}
+		},200);
+		_inject('https://iblogbox.github.io/js/texteditor/jschardet.min.js');
+		return;
+	}
+  function go(){
+	var reader = new FileReader();
+	var usearr=false;
+	if(!reader.readAsBinaryString) usearr=true;
+	reader.onload = function(e){
+		var max=160000;
+		var s='';
+		if(usearr){
+			var bytes = new Uint8Array(e.target.result);
+			var length = bytes.byteLength;
+			for (var i = 0; i < length; i++) {
+				s+=String.fromCharCode(bytes[i]);
+				if(i>max)break;
+			}
+		}else{
+			s=e.target.result;
+			if(s && s.length>max) s=s.substr(0,max);
+		}
+		try{
+			var a=jschardet.detect(s);
+		}catch(err){
+			alert(''+err);	return;
+		}
+		if(!a.encoding){
+			alert('Can not detect the encoding of the text.');
+			return;
+		}
+		var answer=confirm("Text encoding has detected ("+a.encoding+").\n\nDo you want to change the encoding?");
+		if(!answer)return;
+		var b=a.encoding.toLowerCase();
+		_blobtotext(g_blob1,a.encoding,function(s){
+			gcschanged=true;
+			editor.setValue(s || '');			
+			/*var a=_getid('filecharset1');			
+			for(var i = 0; i <= a.options.length-1; i++){
+				if(!a.options[i].value)continue;
+				if(a.options[i].value.toLowerCase()==b){
+					a.options[i].selected=true;
+					break;
+				}
+			}*/
+		},function(){
+			alert('There is an error reading the file.');
+		});
+	};
+	reader.onerror = function(){
+		alert('There is an error reading the file.');
+	};
+	if(usearr) reader.readAsArrayBuffer(g_blob1);
+	else reader.readAsBinaryString(g_blob1);
+  }
+  if(typeof jschardet != 'undefined') go();
+}
+
+var gprintblob, gsaveblob;var gsavedfn={};
+function gd_print(issave){
+	var data=proc_geteditordata();
+	if (!data || !data.editor) return;
+	var title='No Name';
+	if(data.resp && data.resp.title) title=data.resp.title;
+	var str=data.editor.getValue() || '';	
+
+	window.URL=window.URL || window.webkitURL;
+	if(issave){
+		var blobLink=_getid('btn_save2_link');
+		if(!navigator.msSaveBlob) blobLink.href='javascript:void(0);';
+
+		var filename;
+		if(data.resp && data.resp.title) filename=title;
+		else filename=title+'.ps';
+		var filename2=filename;
+		if(gsavedfn[filename2]) filename=gsavedfn[filename2];		
+		filename=prompt("Enter a filename to be saved.",filename);	
+		if(!filename)return;
+		gsavedfn[filename2]=filename;
+
+		if(str.indexOf("\r\n")<0){
+			str=str.replace(/(\n)/g, "\r\n");
+		}
+		var blob = new Blob([str], {encoding:"UTF-8",type:"text/plain;charset=UTF-8"});
+		if(navigator.msSaveBlob){
+			navigator.msSaveBlob(blob, filename);
+		}else{
+			if(!window.URL){
+				alert("This browser does not support.");
+				return;
+			}
+			blobLink.download = filename;
+			if(gsaveblob) window.URL.revokeObjectURL(gsaveblob);
+			gsaveblob=window.URL.createObjectURL(blob);
+			if(issafari){
+				window.open(gsaveblob);
+			}else{
+				blobLink.target='_blank';
+				blobLink.href=gsaveblob;
+			}
+		}
+		return;
+	}
+
+	var answer=confirm("Do you want to apply the font name and size currently displayed?");
+	str=str.replace(/>/gi, "&gt;").replace(/</gi, "&lt;");
+
+	var obj=_getid("runscript_fontsize");	
+	var fontSize=obj.value;
+	var obj=_getid("runscript_fontname");	
+	var fontname=obj.value;
+	if(!answer){
+		fontSize=10;fontname='monospace';
+	}
+	var s='<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>'+title+'</title>';
+	s+='<style>body,pre{font-size:'+fontSize+'pt; font-family:'+fontname+';}pre {white-space: pre-wrap;  white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word;}</style></head>';
+	s+='<body><pre>'+str+'</pre></body></html>';
+
+	if(window.URL && !navigator.msSaveBlob && !issafari){
+		var blob = new Blob([s], {encoding:"UTF-8",type:"application/postscript"});
+		if(gprintblob) window.URL.revokeObjectURL(gprintblob);
+		gprintblob=window.URL.createObjectURL(blob);
+		var win=window.open(gprintblob,'texteditor0124');
+		if(win) win.focus();
+	}else{
+		var win=window.open('','texteditor0124');
+		if(win) var doc=win.document;
+		if(!win || !doc){
+			alert('Error!!');
+			return;
+		}
+		doc.write(s);
+		doc.close();
+		win.focus();
+	}
+}
+
+var gworker, gworkerloaded;
+function proc_log(s,state){
+	if(!state) state='';
+	var a=_getid("dest2");
+	if(a) a.innerHTML='<font class="'+state+'">'+henc(s)+'</font>';
+}
+function init2(){
+	if(window.Worker){
+		if(!gworker){
+			gtotalsize=0;
+			gworker=new Worker('js/worker.js');
+			proc_log('Loading library... Please wait a moment. ','welcome');
+		}
+		gworker.onmessage = function(event) {
+			var message = event.data;
+			if(message.type === "ready"){
+				if(message.error){
+					proc_log(message.error,'error');
+				}else{
+					gworkerloaded=true;
+					proc_log('Loading library... Completed. ','welcome');
+				}
+			}else if(message.type === "progress"){
+				proc_log(message.data || '');
+			}
+		}	
+	}else{
+		proc_log('Not supported on this browser. Please upgrade your browser.','error');
+	}
+	_getid('btn_sheditor').onclick=function(){
+		var a=_getid('tableedit');
+		if(a.style.display=='') a.style.display='none';
+		else a.style.display='';
+		proc_onresize();
+	}
+	viewerinitTimer=setTimeout(function(){
+		var a=_getfrmdoc(_getid("viewer"));
+		if(a){
+			a.location.replace('about:blank');
+		}
+	},100);
+}
+init2();
+</script><script src="client.js" type="text/javascript" gapi_processed="true"></script><script src="api.js" type="text/javascript" gapi_processed="true"></script>
+<iframe src="cache.html" style="display:none;width:0px"></iframe>
+
+<script src="bottom.js" async="" tos="../tos.php?app=PostScript%20Viewer%20and%20Compiler" sitetitle="PostScript Viewer and Compiler"></script>
+<script src="compat2.js"></script>
+<script>init_compat201912_a();</script>
+<div id="adbottom1" style="width:770px;height:55px;position:absolute; bottom:0; right:0;;z-index:9999">
+<table cellpadding="0" cellspacing="0" style="background-color:white"><tbody><tr>
+<td><script async="" src="googlesyndication_adsbygoogle.js"></script>
+<ins class="adsbygoogle" style="display:inline-block;width:728px;height:50px" data-ad-client="ca-pub-1113541014872557" data-ad-slot="3281762247" data-adsbygoogle-status="done"><iframe id="aswift_1" style="height: 1px !important; max-height: 1px !important; max-width: 1px !important; width: 1px !important;"><iframe id="google_ads_frame1"></iframe></iframe></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</td><td><button title="Move Up" style="padding:2px;font-size:14px;margin-left:3px;margin-right:3px" onclick="adbottom2btn_click(this)">UP</button>
+</td></tr></tbody></table>
+</div>
+<script>
+function adbottom2btn_click(btn){
+	var a=document.getElementById('adbottom1');
+	if(!a || !btn)return;
+	var s=a.getAttribute("style");
+	if(s && s.indexOf("bottom:0")>=0){
+		a.setAttribute("style","width:770px;height:55px;position:absolute; top:0; right:0;;z-index:9999");
+		btn.innerHTML='DN';
+		btn.title='Move Down';
+	}else{
+		a.setAttribute("style","width:770px;height:55px;position:absolute; bottom:0; right:0;;z-index:9999");
+		btn.innerHTML='UP';
+		btn.title='Move Up';
+	}
+}
+</script>
+
+<script>
+function gd_findscope(a){try{if(!a)return!1;a=" "+a.toLowerCase()+" ";var b=SCOPES;SCOPES.split&&"string"===typeof SCOPES&&(b=SCOPES.split(" "));for(var c=0;c<b.length;c++)if(b[c]){var d=(b[c].split("/").pop().toLowerCase()||"").replace(/^\s*|\s*$/g,"");"drive.appfolder"==d&&(d="drive.appdata");if(/^(drive\.install|drive\.file|drive|drive\.readonly|drive\.appdata|drive\.appfolder|documents|spreadsheets|script\.external_request|calendar|gmail\.send|gmail\.compose|gmail\.readonly|youtube|books|drive\.activity\.readonly|drive\.activity|drive\.apps\.readonly|drive\.metadata|drive\.metadata\.readonly|drive\.scripts)$/.test(d)&&
+0>a.indexOf(d+" "))return!1}}catch(e){}return!0}
+function init_fix_scope(){var a=window.gd_login_manual,b=window.gd_login;a||(a=window.proc_login_manual);b||(b=window.proc_login);a&&(a+="");b&&(b+="");a&&0<=a.indexOf("if (authResult && !authResult.error")&&0>a.indexOf("gd_findscope(")?(a=a.replace("if (authResult && !authResult.error","if (authResult && !authResult.error && gd_findscope(authResult.scope)"),window.eval(a)):a&&0<=a.indexOf("if (authResult && (!authResult.error || authResult.access_token)")&&0>a.indexOf("gd_findscope(")&&(a=a.replace("if (authResult && (!authResult.error || authResult.access_token)",
+"if (authResult && (!authResult.error || authResult.access_token) && gd_findscope(authResult.scope)"),window.eval(a));b&&0<=b.indexOf("if (authResult && !authResult.error")&&0>b.indexOf("gd_findscope(")?(b=b.replace("if (authResult && !authResult.error","if (authResult && !authResult.error && gd_findscope(authResult.scope)"),window.eval(b)):b&&0<=b.indexOf("if (authResult && (!authResult.error || authResult.access_token)")&&0>b.indexOf("gd_findscope(")&&(b=b.replace("if (authResult && (!authResult.error || authResult.access_token)",
+"if (authResult && (!authResult.error || authResult.access_token) && gd_findscope(authResult.scope)"),window.eval(b))}init_fix_scope();
+</script>
+
+</body></html>
